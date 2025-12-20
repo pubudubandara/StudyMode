@@ -54,6 +54,13 @@ export default function Timer({ onSessionSaved, autoBreak }: TimerProps) {
     }
   }, []);
 
+  // Switch to focus mode when autoBreak is turned off
+  useEffect(() => {
+    if (!autoBreak && mode === 'interval') {
+      setMode('focus');
+    }
+  }, [autoBreak, mode]);
+
   useEffect(() => {
     if (isRunning) {
       startTimeRef.current = Date.now();
