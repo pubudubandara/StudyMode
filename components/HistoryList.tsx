@@ -209,7 +209,7 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
                   value={manualDuration}
                   onChange={(e) => setManualDuration(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1 text-sm focus:outline-none focus:border-sky-500 text-white"
-                  placeholder="45"
+                  placeholder="25"
                 />
               </div>
               <div className="flex-1">
