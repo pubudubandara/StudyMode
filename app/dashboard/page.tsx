@@ -100,32 +100,33 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex flex-col items-center p-4 min-h-screen">
+    <div className="flex flex-col items-center p-4 min-h-screen pt-20 sm:pt-4">
       {/* Auto-Break Toggle & Logout Buttons */}
-      <div className="absolute top-4 right-4 flex items-center gap-3">
+      <div className="fixed top-4 right-4 flex items-center gap-2 sm:gap-3 z-50">
         <button
           onClick={() => {
             const newValue = !autoBreak;
             setAutoBreak(newValue);
             localStorage.setItem('autoBreak', newValue.toString());
           }}
-          className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 hover:bg-slate-600 rounded-lg transition-colors text-sm"
+          className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-700/50 hover:bg-slate-600 rounded-lg transition-colors text-xs sm:text-sm"
         >
-          <span className="text-slate-300 text-xs">Auto Break</span>
-          <div className={`relative w-10 h-5 rounded-full transition-colors ${
+          <span className="text-slate-300 text-[10px] sm:text-xs hidden sm:inline">Auto Break</span>
+          <span className="text-slate-300 text-[10px] sm:hidden">Auto</span>
+          <div className={`relative w-8 sm:w-10 h-4 sm:h-5 rounded-full transition-colors ${
             autoBreak ? 'bg-sky-500' : 'bg-slate-600'
           }`}>
-            <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-transform ${
-              autoBreak ? 'translate-x-5' : 'translate-x-0.5'
+            <div className={`absolute top-0.5 w-3 sm:w-4 h-3 sm:h-4 bg-white rounded-full shadow-md transition-transform ${
+              autoBreak ? 'translate-x-4 sm:translate-x-5' : 'translate-x-0.5'
             }`} />
           </div>
         </button>
         <button
           onClick={handleLogout}
-          className="px-4 py-2 bg-slate-700/50 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors text-sm"
+          className="px-2 sm:px-4 py-1.5 sm:py-2 bg-slate-700/50 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors text-xs sm:text-sm"
         >
-          <i className="fas fa-sign-out-alt mr-2"></i>
-          Logout
+          <i className="fas fa-sign-out-alt sm:mr-2"></i>
+          <span className="hidden sm:inline">Logout</span>
         </button>
       </div>
 
