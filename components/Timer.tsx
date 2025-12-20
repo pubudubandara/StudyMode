@@ -7,9 +7,10 @@ import toast from 'react-hot-toast';
 
 interface TimerProps {
   onSessionSaved: () => void;
+  autoBreak: boolean;
 }
 
-export default function Timer({ onSessionSaved }: TimerProps) {
+export default function Timer({ onSessionSaved, autoBreak }: TimerProps) {
   const [mode, setMode] = useState<'focus' | 'interval'>('focus');
   
   // Focus timer states
@@ -113,6 +114,11 @@ export default function Timer({ onSessionSaved }: TimerProps) {
   };
 
   const handleReset = () => {
+    // Save session if timer was running and has time
+    if (isRunning && seconds > 0) {
+      saveSession();
+    }
+    
     if (isRunning && intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -124,11 +130,13 @@ export default function Timer({ onSessionSaved }: TimerProps) {
     setStatusText('Ready to focus');
     setStatusClass('bg-slate-800 text-slate-400 border-slate-700');
     
-    // Switch to interval tab after reset
-    setMode('interval');
-    setIntervalType('short');
-    setCurrentInterval(0);
-    setIntervalTimeLeft(shortBreakTime * 60);
+    // Switch to interval tab after reset only if autoBreak is enabled
+    if (autoBreak) {
+      setMode('interval');
+      setIntervalType('short');
+      setCurrentInterval(0);
+      setIntervalTimeLeft(shortBreakTime * 60);
+    }
   };
 
   const saveSession = async () => {
@@ -265,49 +273,51 @@ export default function Timer({ onSessionSaved }: TimerProps) {
       )}
 
     <div className="w-full max-w-md flex flex-col gap-6 animate-fade-in">
-      {/* Mode Tabs */}
-      <div className="flex gap-2 bg-slate-800/50 p-1 rounded-lg border border-slate-700/50">
-        <button
-          onClick={() => setMode('focus')}
-          className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === 'focus'
-              ? 'bg-slate-700 text-white shadow-sm'
-              : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <i className="fas fa-brain mr-2"></i>Focus
-        </button>
-        <button
-          onClick={() => {
-            setMode('interval');
-            setIntervalType('short');
-            setCurrentInterval(0);
-            setIntervalTimeLeft(shortBreakTime * 60);
-          }}
-          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === 'interval' && intervalType === 'short'
-              ? 'bg-slate-700 text-white shadow-sm'
-              : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <i className="fas fa-clock mr-1"></i>Short Break
-        </button>
-        <button
-          onClick={() => {
-            setMode('interval');
-            setIntervalType('long');
-            setCurrentInterval(3);
-            setIntervalTimeLeft(longBreakTime * 60);
-          }}
-          className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-            mode === 'interval' && intervalType === 'long'
-              ? 'bg-slate-700 text-white shadow-sm'
-              : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <i className="fas fa-clock mr-1"></i>Long Break
-        </button>
-      </div>
+      {/* Mode Tabs - Only show if autoBreak is enabled */}
+      {autoBreak && (
+        <div className="flex gap-2 bg-slate-800/50 p-1 rounded-lg border border-slate-700/50">
+          <button
+            onClick={() => setMode('focus')}
+            className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              mode === 'focus'
+                ? 'bg-slate-700 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <i className="fas fa-brain mr-2"></i>Focus
+          </button>
+          <button
+            onClick={() => {
+              setMode('interval');
+              setIntervalType('short');
+              setCurrentInterval(0);
+              setIntervalTimeLeft(shortBreakTime * 60);
+            }}
+            className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              mode === 'interval' && intervalType === 'short'
+                ? 'bg-slate-700 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <i className="fas fa-clock mr-1"></i>Short Break
+          </button>
+          <button
+            onClick={() => {
+              setMode('interval');
+              setIntervalType('long');
+              setCurrentInterval(3);
+              setIntervalTimeLeft(longBreakTime * 60);
+            }}
+            className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              mode === 'interval' && intervalType === 'long'
+                ? 'bg-slate-700 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <i className="fas fa-clock mr-1"></i>Long Break
+          </button>
+        </div>
+      )}
 
       {/* Focus Timer Mode */}
       {mode === 'focus' && (
