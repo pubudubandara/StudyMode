@@ -112,7 +112,7 @@ export default function DashboardPage() {
           className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-700/50 hover:bg-slate-600 rounded-lg transition-colors text-xs sm:text-sm"
         >
           <span className="text-slate-300 text-[10px] sm:text-xs hidden sm:inline">Auto Break</span>
-          <span className="text-slate-300 text-[10px] sm:hidden">Auto</span>
+          <span className="text-slate-300 text-[10px] sm:hidden">Auto Break</span>
           <div className={`relative w-8 sm:w-10 h-4 sm:h-5 rounded-full transition-colors ${
             autoBreak ? 'bg-sky-500' : 'bg-slate-600'
           }`}>
