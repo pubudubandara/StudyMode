@@ -61,7 +61,10 @@ export default function ChartComponent({ labels, data }: ChartComponentProps) {
             bodyColor: '#38bdf8',
             displayColors: false,
             callbacks: {
-              label: (context) => `${parseFloat(context.parsed.y.toString()).toFixed(1)} hrs`,
+              label: (context) => {
+                const value = context.parsed.y ?? 0;
+                return `${parseFloat(value.toString()).toFixed(1)} hrs`;
+              },
             },
           },
         },
