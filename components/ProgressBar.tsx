@@ -164,27 +164,27 @@ export default function ProgressBar({ sessions }: ProgressBarProps) {
           {/* Bubble effects throughout the bar */}
           <div className="absolute inset-0 overflow-hidden">
             {/* Left side bubbles */}
-            <div className="absolute w-1 h-1 bg-white/50 rounded-full animate-bubble-1" style={{ left: '10%', bottom: '15%' }} />
-            <div className="absolute w-1.5 h-1.5 bg-white/40 rounded-full animate-bubble-2" style={{ left: '15%', bottom: '40%' }} />
-            <div className="absolute w-0.5 h-0.5 bg-white/45 rounded-full animate-bubble-3" style={{ left: '8%', bottom: '65%' }} />
+            <div className="absolute w-1 h-1 bg-white/80 rounded-full animate-bubble-1 shadow-lg" style={{ left: '10%', bottom: '15%' }} />
+            <div className="absolute w-1.5 h-1.5 bg-white/70 rounded-full animate-bubble-2 shadow-lg" style={{ left: '15%', bottom: '40%' }} />
+            <div className="absolute w-0.5 h-0.5 bg-white/75 rounded-full animate-bubble-3 shadow-sm" style={{ left: '8%', bottom: '65%' }} />
             
             {/* Middle bubbles */}
-            <div className="absolute w-1 h-1 bg-white/50 rounded-full animate-bubble-2" style={{ left: '30%', bottom: '20%' }} />
-            <div className="absolute w-1.5 h-1.5 bg-white/40 rounded-full animate-bubble-3" style={{ left: '35%', bottom: '55%' }} />
-            <div className="absolute w-0.5 h-0.5 bg-white/50 rounded-full animate-bubble-1" style={{ left: '40%', bottom: '35%' }} />
-            <div className="absolute w-1 h-1 bg-white/45 rounded-full animate-bubble-1" style={{ left: '45%', bottom: '70%' }} />
+            <div className="absolute w-1 h-1 bg-white/80 rounded-full animate-bubble-2 shadow-lg" style={{ left: '30%', bottom: '20%' }} />
+            <div className="absolute w-1.5 h-1.5 bg-white/70 rounded-full animate-bubble-3 shadow-lg" style={{ left: '35%', bottom: '55%' }} />
+            <div className="absolute w-0.5 h-0.5 bg-white/75 rounded-full animate-bubble-1 shadow-sm" style={{ left: '40%', bottom: '35%' }} />
+            <div className="absolute w-1 h-1 bg-white/75 rounded-full animate-bubble-1 shadow-lg" style={{ left: '45%', bottom: '70%' }} />
             
             {/* Center-right bubbles */}
-            <div className="absolute w-1.5 h-1.5 bg-white/50 rounded-full animate-bubble-2" style={{ left: '55%', bottom: '25%' }} />
-            <div className="absolute w-1 h-1 bg-white/40 rounded-full animate-bubble-3" style={{ left: '60%', bottom: '50%' }} />
-            <div className="absolute w-0.5 h-0.5 bg-white/45 rounded-full animate-bubble-1" style={{ left: '65%', bottom: '15%' }} />
-            <div className="absolute w-1 h-1 bg-white/50 rounded-full animate-bubble-2" style={{ left: '70%', bottom: '60%' }} />
+            <div className="absolute w-1.5 h-1.5 bg-white/80 rounded-full animate-bubble-2 shadow-lg" style={{ left: '55%', bottom: '25%' }} />
+            <div className="absolute w-1 h-1 bg-white/70 rounded-full animate-bubble-3 shadow-lg" style={{ left: '60%', bottom: '50%' }} />
+            <div className="absolute w-0.5 h-0.5 bg-white/75 rounded-full animate-bubble-1 shadow-sm" style={{ left: '65%', bottom: '15%' }} />
+            <div className="absolute w-1 h-1 bg-white/80 rounded-full animate-bubble-2 shadow-lg" style={{ left: '70%', bottom: '60%' }} />
             
             {/* Right side bubbles */}
-            <div className="absolute w-1.5 h-1.5 bg-white/45 rounded-full animate-bubble-3" style={{ left: '80%', bottom: '30%' }} />
-            <div className="absolute w-1 h-1 bg-white/50 rounded-full animate-bubble-1" style={{ left: '85%', bottom: '45%' }} />
-            <div className="absolute w-0.5 h-0.5 bg-white/40 rounded-full animate-bubble-2" style={{ left: '88%', bottom: '18%' }} />
-            <div className="absolute w-1 h-1 bg-white/45 rounded-full animate-bubble-3" style={{ left: '92%', bottom: '65%' }} />
+            <div className="absolute w-1.5 h-1.5 bg-white/75 rounded-full animate-bubble-3 shadow-lg" style={{ left: '80%', bottom: '30%' }} />
+            <div className="absolute w-1 h-1 bg-white/80 rounded-full animate-bubble-1 shadow-lg" style={{ left: '85%', bottom: '45%' }} />
+            <div className="absolute w-0.5 h-0.5 bg-white/70 rounded-full animate-bubble-2 shadow-sm" style={{ left: '88%', bottom: '18%' }} />
+            <div className="absolute w-1 h-1 bg-white/75 rounded-full animate-bubble-3 shadow-lg" style={{ left: '92%', bottom: '65%' }} />
           </div>
           
           {/* Enhanced glow effect at curved edge */}
