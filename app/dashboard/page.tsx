@@ -8,6 +8,7 @@ import { sessionAPI, Session } from '@/lib/session-api';
 import Timer from '@/components/Timer';
 import HistoryList from '@/components/HistoryList';
 import Analytics from '@/components/Analytics';
+import ProgressBar from '@/components/ProgressBar';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -192,6 +193,9 @@ export default function DashboardPage() {
           <i className="fas fa-chart-line mr-2"></i>Analysis
         </button>
       </div>
+
+      {/* Progress Bar - Shows across all views */}
+      {mounted && <ProgressBar sessions={sessions} />}
 
       {/* Timer View */}
       {mounted && activeView === 'timer' && (
