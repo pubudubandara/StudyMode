@@ -122,6 +122,17 @@ body.overtime {
   animation: bubble-3 6s ease-in-out infinite 2s;
 }
 
+/* Screen blink animation for interval timer */
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  10%, 30%, 50%, 70%, 90% { opacity: 1; }
+  20%, 40%, 60%, 80% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 3s ease-in-out;
+}
+
 .glass-panel {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
