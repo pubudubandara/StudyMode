@@ -8,6 +8,7 @@ import { sessionAPI, Session } from '@/lib/session-api';
 import Timer from '@/components/Timer';
 import HistoryList from '@/components/HistoryList';
 import Analytics from '@/components/Analytics';
+import ProgressBar from '@/components/ProgressBar';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -18,12 +19,19 @@ export default function DashboardPage() {
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [activeView, setActiveView] = useState<'timer' | 'stats'>('timer');
   const [mounted, setMounted] = useState(false);
+  const [autoBreak, setAutoBreak] = useState(true);
 
   // Dev safety: if an old service worker is still controlling the page,
   // it can serve stale JS/manifest and cause "today"/icons/metadata confusion.
   // Run this ONLY after mount to avoid hydration mismatch.
   useEffect(() => {
     setMounted(true);
+    
+    // Load autoBreak setting
+    const savedAutoBreak = localStorage.getItem('autoBreak');
+    if (savedAutoBreak !== null) {
+      setAutoBreak(savedAutoBreak === 'true');
+    }
     
     if (process.env.NODE_ENV === 'production') return;
     if (!('serviceWorker' in navigator)) return;
@@ -158,8 +166,25 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Logout Button */}
-      <div className="absolute top-4 right-4">
+      {/* Auto-Break Toggle & Logout Buttons */}
+      <div className="absolute top-4 right-4 flex items-center gap-3">
+        <button
+          onClick={() => {
+            const newValue = !autoBreak;
+            setAutoBreak(newValue);
+            localStorage.setItem('autoBreak', newValue.toString());
+          }}
+          className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 hover:bg-slate-600 rounded-lg transition-colors text-sm"
+        >
+          <span className="text-slate-300 text-xs">Auto Break</span>
+          <div className={`relative w-10 h-5 rounded-full transition-colors ${
+            autoBreak ? 'bg-sky-500' : 'bg-slate-600'
+          }`}>
+            <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-transform ${
+              autoBreak ? 'translate-x-5' : 'translate-x-0.5'
+            }`} />
+          </div>
+        </button>
         <button
           onClick={handleLogout}
           className="px-4 py-2 bg-slate-700/50 hover:bg-slate-600 text-slate-300 rounded-lg transition-colors text-sm"
@@ -193,10 +218,13 @@ export default function DashboardPage() {
         </button>
       </div>
 
+      {/* Progress Bar - Shows across all views */}
+      {mounted && <ProgressBar sessions={sessions} />}
+
       {/* Timer View */}
       {mounted && activeView === 'timer' && (
         <div className="w-full max-w-md flex flex-col gap-6">
-          <Timer onSessionSaved={loadSessions} />
+          <Timer onSessionSaved={loadSessions} autoBreak={autoBreak} />
           <HistoryList sessions={sessions} onUpdate={loadSessions} loading={loadingSessions} />
         </div>
       )}
