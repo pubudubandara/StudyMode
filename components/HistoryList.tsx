@@ -19,6 +19,8 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
   const [sessionToDelete, setSessionToDelete] = useState<number | null>(null);
   const [manualDuration, setManualDuration] = useState('');
   const [manualTarget, setManualTarget] = useState('25');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   // Treat "Today" as the UTC calendar day key. This matches how your saved
   // `date` values look in Mongo (e.g. 2025-12-20T...+00:00) and avoids timezone
@@ -42,8 +44,9 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
   const label = isExpanded ? "Last 3 Days" : "Today";
 
   const handleDelete = async () => {
-    if (!sessionToDelete) return;
+    if (!sessionToDelete || isDeleting) return;
 
+    setIsDeleting(true);
     try {
       await sessionAPI.deleteSession(sessionToDelete);
       toast.success('Session deleted successfully');
@@ -53,10 +56,14 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
     } catch (error) {
       console.error('Failed to delete:', error);
       toast.error('Failed to delete session');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const handleSaveManual = async () => {
+    if (isAdding) return;
+
     const d = parseInt(manualDuration);
     if (!d || d <= 0) {
       toast.error("Invalid duration");
@@ -71,6 +78,7 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
       timestamp: Date.now()
     };
 
+    setIsAdding(true);
     try {
       await sessionAPI.saveSession(entry);
       toast.success('Session added successfully');
@@ -80,6 +88,8 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
     } catch (error) {
       console.error('Failed to save:', error);
       toast.error('Failed to add entry');
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -233,9 +243,10 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
               </button>
               <button
                 onClick={handleSaveManual}
-                className="text-xs px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded transition-colors"
+                disabled={isAdding}
+                className="text-xs px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Add
+                {isAdding ? 'Adding...' : 'Add'}
               </button>
             </div>
           </div>
@@ -363,9 +374,10 @@ export default function HistoryList({ sessions, onUpdate, loading = false }: His
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 rounded text-sm bg-red-600 hover:bg-red-500 text-white shadow-lg transition-colors"
+                disabled={isDeleting}
+                className="px-4 py-2 rounded text-sm bg-red-600 hover:bg-red-500 text-white shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Delete
+                {isDeleting ? 'Deleting...' : 'Delete'}
               </button>
             </div>
           </div>
