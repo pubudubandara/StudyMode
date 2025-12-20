@@ -32,7 +32,7 @@ export default function ProgressBar({ sessions }: ProgressBarProps) {
 
     // Remove today from the calculation to get historical highest
     dailyTotals.delete(todayKey);
-    const maxHistorical = Math.max(...Array.from(dailyTotals.values()), 3600); // Minimum 1 hour
+    const maxHistorical = Math.max(...Array.from(dailyTotals.values()), 3 * 3600); // Minimum 3 hours
     
     // If today exceeds the historical highest, we're growing!
     if (todaySum > maxHistorical && maxHistorical > 0) {
