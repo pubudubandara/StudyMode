@@ -19,7 +19,7 @@ if (fs.existsSync(envPath)) {
   const envContent = `# MongoDB Connection URI
 MONGODB_URI=mongodb://localhost:27017/studymode
 # Or use MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/studymode?retryWrites=true&w=majority
+# MONGODB_URI=
 
 # JWT Secret
 JWT_SECRET=${jwtSecret}
