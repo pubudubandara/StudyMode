@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { offlineStorage } from '@/lib/offline-storage';
 import { sessionAPI, Session } from '@/lib/session-api';
 import Timer from '@/components/Timer';
 import HistoryList from '@/components/HistoryList';
@@ -14,7 +13,6 @@ export default function DashboardPage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [isOnline, setIsOnline] = useState(true);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [activeView, setActiveView] = useState<'timer' | 'stats'>('timer');
@@ -67,57 +65,7 @@ export default function DashboardPage() {
     }
   }, [router]);
 
-  // Setup offline storage and toast
-  useEffect(() => {
-    (window as any).toast = toast;
-    (window as any).offlineStorage = offlineStorage;
-  }, []);
 
-  // Service Worker and offline monitoring
-  useEffect(() => {
-    // Register service worker (only in production or when explicitly enabled)
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered:', registration);
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
-
-      // Listen for sync messages from service worker
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        if (event.data.type === 'SYNC_SESSIONS') {
-          handleSync();
-        }
-      });
-    }
-
-    // Initialize IndexedDB
-    offlineStorage.init().catch(console.error);
-
-    // Monitor online/offline status
-    const handleOnline = () => {
-      setIsOnline(true);
-      toast.success('Back online! Syncing data...');
-      setTimeout(handleSync, 1000);
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-      toast.error('You are offline. Data will be saved locally.');
-    };
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    setIsOnline(navigator.onLine);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
 
   // Load sessions
   useEffect(() => {
@@ -138,11 +86,6 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSync = async () => {
-    await sessionAPI.syncPendingSessions();
-    loadSessions();
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     router.push('/login');
@@ -158,14 +101,6 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col items-center p-4 min-h-screen">
-      {/* Offline Indicator */}
-      {!isOnline && (
-        <div className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50 bg-orange-500/90 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-fade-in">
-          <i className="fas fa-wifi-slash"></i>
-          <span className="text-sm font-medium">Offline Mode - Data saved locally</span>
-        </div>
-      )}
-
       {/* Auto-Break Toggle & Logout Buttons */}
       <div className="absolute top-4 right-4 flex items-center gap-3">
         <button
