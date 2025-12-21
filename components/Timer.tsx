@@ -71,11 +71,9 @@ export default function Timer({ onSessionSaved, autoBreak }: TimerProps) {
         const newSeconds = Math.floor(totalMs / 1000);
         setSeconds(newSeconds);
 
-        // Check if target reached
+        // Check if target reached - just mark it, don't reset
         if (newSeconds >= targetMinutes * 60 && !hasReachedTarget) {
           setHasReachedTarget(true);
-          setStatusText('Overtime Mode');
-          setStatusClass('bg-red-900/50 text-red-200 border-red-700/50 animate-pulse font-bold');
         }
       }, 100);
     } else {
@@ -89,7 +87,7 @@ export default function Timer({ onSessionSaved, autoBreak }: TimerProps) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, targetMinutes, hasReachedTarget]);
+  }, [isRunning, targetMinutes]);
 
   const handleToggle = () => {
     if (isRunning) {
