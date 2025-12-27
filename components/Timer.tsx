@@ -61,6 +61,20 @@ export default function Timer({ onSessionSaved, autoBreak }: TimerProps) {
     }
   }, [autoBreak, mode]);
 
+  // Update page title when timer is running
+  useEffect(() => {
+    if (isRunning) {
+      document.title = '⏱️ 🔴Running - StudyMode';
+    } else {
+      document.title = 'StudyMode';
+    }
+    
+    // Cleanup: reset title when component unmounts
+    return () => {
+      document.title = 'StudyMode';
+    };
+  }, [isRunning]);
+
   useEffect(() => {
     if (isRunning) {
       startTimeRef.current = Date.now();
