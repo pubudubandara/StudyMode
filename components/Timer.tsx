@@ -64,7 +64,7 @@ export default function Timer({ onSessionSaved, autoBreak }: TimerProps) {
   // Update page title when timer is running
   useEffect(() => {
     if (isRunning) {
-      document.title = '⏱️ 🔴Running - StudyMode';
+      document.title = '🔴 Running - StudyMode';
     } else {
       document.title = 'StudyMode';
     }
